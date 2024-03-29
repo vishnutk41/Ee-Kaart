@@ -1,21 +1,18 @@
-import 'package:eekart/view/login.dart';
-import 'package:flutter/material.dart';
-import '../services/authentication/firebaseopt.dart'; 
 
 import 'package:eekart/routeManager.dart';
 import 'package:eekart/services/authentication/firebaseopt.dart';
 import 'package:eekart/view/signupScreen.dart';
 import 'package:flutter/material.dart';
 
-class SignupScreen extends StatefulWidget {
+class LoginScreen extends StatefulWidget {
 
-  const SignupScreen({super.key});
+  const LoginScreen({super.key});
 
   @override
-  State<SignupScreen> createState() => _SignupScreenState();
+  State<LoginScreen> createState() => _LoginScreenState();
 }
 
-class _SignupScreenState extends State<SignupScreen> {
+class _LoginScreenState extends State<LoginScreen> {
     final _formKey = GlobalKey<FormState>();
   String userEmail = '';
   String userPassword = '';
@@ -46,14 +43,14 @@ class _SignupScreenState extends State<SignupScreen> {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: <Widget>[
                   Text(
-                    "Sign Up",
+                    "Login",
                     style: TextStyle(color: Colors.white, fontSize: 40),
                   ),
                   SizedBox(
                     height: 10,
                   ),
                   Text(
-                    "Create Your Account",
+                    "Welcome Back",
                     style: TextStyle(color: Colors.white, fontSize: 18),
                   ),
                 ],
@@ -133,10 +130,10 @@ class _SignupScreenState extends State<SignupScreen> {
                           GestureDetector(
                                           onTap: () {
                     
-                if (_formKey.currentState!.validate()) {
-                  _formKey.currentState!.save();
-                  fireBaseAuth.createUserWithEmailAndPassword(userEmail, userPassword,context);
-                }
+                                    if ( _formKey.currentState!.validate()) {
+                                    _formKey.currentState!.save();
+                                    fireBaseAuth.signInWithEmailAndPassword(userEmail, userPassword,context);
+                                    }
                                   },
                             child: Container(
                               height: 50,
@@ -146,7 +143,7 @@ class _SignupScreenState extends State<SignupScreen> {
                                   color: Colors.orange[900]),
                               child: const Center(
                                 child: Text(
-                                  "Sign Up",
+                                  "Login",
                                   style: TextStyle(
                                       color: Colors.white,
                                       fontWeight: FontWeight.bold),
@@ -166,11 +163,11 @@ class _SignupScreenState extends State<SignupScreen> {
                               ),
                                 GestureDetector(
                                   onTap: () =>
-                                 Navigator.of(context).push(routeManager.createRoute(const LoginScreen())),
+                                 Navigator.of(context).push(routeManager.createRoute(const SignupScreen())),
                     
                     
                                   child: Text(
-                                  "Login",
+                                  "Register",
                                   style: TextStyle(color: Colors.orange[900]),
                                                             ),
                                 ),
@@ -192,55 +189,3 @@ class _SignupScreenState extends State<SignupScreen> {
     );
   }
 }
-
-// class SignupScreen extends StatefulWidget {
-//   const SignupScreen({super.key});
-
-//   @override
-//   _SignupScreenState createState() => _SignupScreenState();
-// }
-
-// class _SignupScreenState extends State<SignupScreen> {
-//   final _formKey = GlobalKey<FormState>();
-//   String userEmail = '';
-//   String userPassword = '';
-//   FireBaseAuth fireBaseAuth = FireBaseAuth();
-
-//   @override
-//   Widget build(BuildContext context) {
-//     return Scaffold(
-//       appBar: AppBar(title: const Text('Sign Up')),
-//       body: Form(
-//         key: _formKey,
-//         child: Column(
-//           mainAxisSize: MainAxisSize.min,
-//           children: [
-//             TextFormField(
-//               decoration: const InputDecoration(labelText: 'Email'),
-//               validator: (value) =>
-//                   value!.isEmpty || !value.contains('@') ? "Enter a valid email" : null,
-//               onSaved: (value) => userEmail = value!,
-//             ),
-//             TextFormField(
-//               decoration: const InputDecoration(labelText: 'Password'),
-//               obscureText: true,
-//               validator: (value) => value!.isEmpty || value.length < 6
-//                   ? "Password must be at least 6 characters long"
-//                   : null,
-//               onSaved: (value) => userPassword = value!,
-//             ),
-//             ElevatedButton(
-//               onPressed: () {
-//                 if (_formKey.currentState!.validate()) {
-//                   _formKey.currentState!.save();
-//                   fireBaseAuth.createUserWithEmailAndPassword(userEmail, userPassword,context);
-//                 }
-//               },
-//               child: const Text('Sign Up'),
-//             ),
-//           ],
-//         ),
-//       ),
-//     );
-//   }
-// }

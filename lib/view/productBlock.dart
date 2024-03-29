@@ -34,7 +34,6 @@ class ProductBlock extends StatelessWidget {
 
       child: Stack(
         children: [
-
           Padding(
             padding: const EdgeInsets.symmetric(horizontal: 10),
             child: Column(
@@ -54,17 +53,9 @@ class ProductBlock extends StatelessWidget {
                       child: Column(
                         children: [
                           Text("${productPrice}",style: TextStyle(color: Colors.blue.shade600,fontWeight: FontWeight.bold,fontSize: 15),),
-                          // Container(
-                          //   height: 30,
-                          //   width: 70,
-                          //   decoration: BoxDecoration(color: Colors.blue,borderRadius: BorderRadius.circular(10),),
-                          //   child: const Center(child: Text('Buy Now',style: TextStyle(color: Colors.white,fontWeight: FontWeight.bold,fontSize: 15),))),
                         ],
                       ),
                     ),
-               
-          
-          
               ],
             ),
           ),

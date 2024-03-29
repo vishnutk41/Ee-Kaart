@@ -1,4 +1,5 @@
 import 'package:dio/dio.dart';
+import 'package:eekart/routeManager.dart';
 import 'package:eekart/view/cart_list_body.dart';
 import 'package:eekart/view/demopage.dart';
 import 'package:eekart/services/authentication/firebaseopt.dart';
@@ -7,23 +8,24 @@ import 'package:eekart/view/productInfo.dart';
 import 'package:eekart/model/productModel.dart';
 import 'package:flutter/material.dart';
 
-class TestScreen extends StatefulWidget {
+class HomePage extends StatefulWidget {
   @override
-  _TestScreenState createState() => _TestScreenState();
+  _HomePageState createState() => _HomePageState();
 }
 
-class _TestScreenState extends State<TestScreen> {
+class _HomePageState extends State<HomePage> {
   final Dio _dio = Dio();
   List<Product> products = [];
   FireBaseAuth fireBaseAuth = FireBaseAuth();
-
+  RouteManager routeManager=RouteManager(); 
+  
   @override
   void initState() {
     super.initState();
-    fetchProducts();
+   fetchProducts();
   }
 
-  Future<void> fetchProducts() async {
+ Future<void> fetchProducts() async {
     try {
       final response = await _dio.get('https://fakestoreapi.com/products');
 
@@ -55,18 +57,28 @@ class _TestScreenState extends State<TestScreen> {
       child: Scaffold(
         appBar: AppBar(
           title: const Text('EeKart'),
+          flexibleSpace: Container(
+            decoration: BoxDecoration(
+                          gradient: LinearGradient(begin: Alignment.topCenter, colors: [
+          Colors.orange[900]!,
+          Colors.orange[800]!,
+          Colors.orange[400]!
+        ]
+        )
+            ),
+          ),
           elevation: 0,
           actions:  [
 
-                         GestureDetector(
+              GestureDetector(
               onTap: () {
-                              fireBaseAuth.showLogoutDialog(context);
-
+              fireBaseAuth.showLogoutDialog(context);
               },
               child: const Center(child: Text('Logout',style: TextStyle(fontWeight: FontWeight.bold,color: Colors.white,fontSize: 20),)),
              ),
             IconButton(onPressed: () {
-              Navigator.push(context, MaterialPageRoute(builder: (context)=>const FavouriteListBody()));
+             Navigator.of(context).push(routeManager.createRoute(FavouriteListBody()));
+
             },
              icon: const Icon(Icons.shopping_cart_outlined,color: Colors.white,size: 30,)),
 
@@ -86,10 +98,10 @@ class _TestScreenState extends State<TestScreen> {
             itemCount: products.length,
             itemBuilder: (context, index) {
               return GestureDetector(
-                onTap: () =>  Navigator.push(
-                              context,
-                              MaterialPageRoute(builder: (context) => ProductInfo(product: products[index])),
-                               ),
+                onTap: () =>  
+
+                 Navigator.of(context).push(routeManager.createRoute(ProductInfo(product: products[index]))),
+
                 child: ProductItem(product: products[index]));
             },
           ),

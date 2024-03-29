@@ -1,12 +1,14 @@
 
 
-import 'package:eekart/view/loginScreen.dart';
+import 'package:eekart/routeManager.dart';
+import 'package:eekart/view/login.dart';
 import 'package:eekart/view/testScreen.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class FireBaseAuth {
+    RouteManager routeManager=RouteManager();
 
 createUserWithEmailAndPassword(String emailAddress,String password, BuildContext context)async{
 print('email:${emailAddress},password:${password}');
@@ -17,8 +19,12 @@ try {
   );
   print('response is : ${credential}');
 
-  Navigator.of(context).pushReplacement(
-  MaterialPageRoute(builder: (context) => LoginScreen()));
+  // Navigator.of(context).pushReplacement(
+  // MaterialPageRoute(builder: (context) => LoginScreen()));
+
+      Navigator.of(context).pushReplacement(routeManager.createRoute( LoginScreen()));
+
+
 } on FirebaseAuthException catch (e) {
   if (e.code == 'weak-password') {
     print('The password provided is too weak.');
@@ -42,9 +48,10 @@ Future<void> signInWithEmailAndPassword(String emailAddress, String password, Bu
     if (uid.isNotEmpty) {
       final SharedPreferences prefs = await SharedPreferences.getInstance();
       await prefs.setString('userUid', uid);
-      Navigator.of(context).pushReplacement(
-        MaterialPageRoute(builder: (context) => TestScreen()),
-      );
+
+       Navigator.of(context).pushReplacement(routeManager.createRoute(HomePage()));
+
+
     } else {
       print('Failed to obtain UID from Firebase User.');
     }
@@ -84,9 +91,8 @@ Future<void> showLogoutDialog(BuildContext context) async {
 Future<void> logout(BuildContext context) async {
   final SharedPreferences prefs = await SharedPreferences.getInstance();
   await prefs.remove('userUid');
-  Navigator.of(context).pushReplacement(
-    MaterialPageRoute(builder: (context) => LoginScreen()),
-  );
+  Navigator.of(context).pushReplacement(routeManager.createRoute(LoginScreen()));
+
 }
 
 
